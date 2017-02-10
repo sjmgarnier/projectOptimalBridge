@@ -15,7 +15,9 @@ if (!require(pacman))
   install.packages("pacman")
 
 p_load("ggplot2", "cowplot", "dplyr", "RColorBrewer", "viridis", "DEoptim")
-p_load_gh("swarm-lab/projectOptimalBridge")
+#p_load_gh("swarm-lab/projectOptimalBridge")
+
+library(projectOptimalBridge)
 
 # Create pretty colorblind friendly palette
 cbf <- brewer.pal(8, "Dark2")
