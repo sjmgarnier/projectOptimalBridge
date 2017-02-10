@@ -27,7 +27,7 @@
 #'
 #' @return Density \code{rho}
 #'
-#' @author Jason Graham, \email{jason.graham@scranton.edu}
+#' @author Jason Graham, \email{jason.graham@@scranton.edu}
 #'
 #' @export
 #'

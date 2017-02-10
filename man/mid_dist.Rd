@@ -24,6 +24,4 @@ This function models the distance between two
 }
 \author{
 Jason Graham, \email{jason.graham@scranton.edu}
-
- @export
 }

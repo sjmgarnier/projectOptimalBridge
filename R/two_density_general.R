@@ -1,32 +1,32 @@
 #' @title Density Function for Two-apex Apparatus
 #'
 #' @description This function models the density as a function of
-#'              distance for the two-apex appratus. 
-#' 
-#' @param d vector of distances values 
-#'       
+#'              distance for the two-apex appratus.
+#'
+#' @param d vector of distances values
+#'
 #' @param angle Angle of apex (in degrees)
-#' 
+#'
 #' @param ant.dens Density of ants, default value =  2.2
-#' 
+#'
 #' @param LT Overall trail length, default value = 100 (cm)
-#' 
+#'
 #' @param L0 Length of one arm, default value = 22 (cm)
 #'
 #' @param ln Length of avg ant default value = 0.691 (cm)
-#' 
+#'
 #' @param wn  Width of avg ant default value = 0.107 (cm)
-#' 
+#'
 #' @param wA Width of apparatus, default value = 3.3 (cm)
 #'
 #' @param alpha Free fitting parameter value from Reid et al, default value 17.02
-#' 
+#'
 #' @return Density \code{rho}
 #'
-#' @author Jason Graham, \email{jason.graham@scranton.edu}
+#' @author Jason Graham, \email{jason.graham@@scranton.edu}
 #'
-#'  @export
-#'    
+#' @export
+#'
 two_density_general <- function(d,
                                 angle,
                                 ant.dens = 2.2,

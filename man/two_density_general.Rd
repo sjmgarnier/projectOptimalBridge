@@ -35,6 +35,4 @@ This function models the density as a function of
 }
 \author{
 Jason Graham, \email{jason.graham@scranton.edu}
-
- @export
 }
