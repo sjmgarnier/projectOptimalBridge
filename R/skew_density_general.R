@@ -1,36 +1,36 @@
 #' @title Density Function for Asymmetric Apparatus
 #'
 #' @description This function models the density as a function of
-#'              distance for the asymmetric appratus. 
-#' 
-#' @param d vector of distances values 
-#'       
+#'              distance for the asymmetric appratus.
+#'
+#' @param d vector of distances values
+#'
 #' @param angle1 Angle left arm makes with vertical (in degrees)
-#' 
+#'
 #' @param angle2 Angle right arm makes with vertical (in degrees)
-#'   
+#'
 #' @param ant.dens Density of ants, default value =  2.2
-#' 
+#'
 #' @param LT Overall trail length, default value = 100 (cm)
-#' 
+#'
 #' @param LS0 Length of left arm, default value = 22 (cm)
-#' 
+#'
 #' @param LL0 Length of right arm, default value = 44 (cm)
-#' 
+#'
 #' @param wA Width of apparatus, default value = 3.3 (cm)
-#' 
+#'
 #' @param ln Length of avg ant default value = 0.691 (cm)
-#' 
+#'
 #' @param wn  Width of avg ant default value = 0.107 (cm)
-#' 
+#'
 #' @param alpha Free fitting parameter value from Reid et al, default value 17.02
-#' 
+#'
 #' @return Density \code{rho}
 #'
 #' @author Jason Graham, \email{jason.graham@scranton.edu}
 #'
-#'  @export
-#'    
+#' @export
+#'
 skew_density_general <- function(d,
                                    angle1,
                                    angle2,

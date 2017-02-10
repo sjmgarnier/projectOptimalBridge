@@ -38,7 +38,6 @@ R code for asymmetric configuration density function is contained in skew_densit
 Implement optimization routine on asymmetric density function. 
 
 ```{r}
-library(DEoptim)
 
 contDE <- DEoptim.control(trace=FALSE)
 
@@ -100,8 +99,6 @@ write.table(skew.results, file = "skewResults.csv", sep = ",",qmethod = "double"
 Process data. 
 
 ```{r}
-library(dplyr)
-library(ggplot2)
 
 skew.Results.Data <- read.table("skewResults.csv", header = TRUE, sep = ",")
 
@@ -109,14 +106,14 @@ skew.Results.Data <- read.table("skewResults.csv", header = TRUE, sep = ",")
 
 # Case 1: left-angle = 10 degrees
 t10.Pvary <- filter(skew.Results.Data, theta == 10)
-View(t10.Pvary)
+#View(t10.Pvary)
 
 x <- t10.Pvary$sum
 y <- t10.Pvary$d1 - t10.Pvary$d2
 
 # Casew 2: left-angle = 20 degress
 t20.Pvary <- filter(skew.Results.Data, theta == 20)
-View(t20.Pvary)
+#View(t20.Pvary)
 
 u <- t20.Pvary$sum
 v <- t20.Pvary$d1 - t20.Pvary$d2
