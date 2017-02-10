@@ -7,131 +7,18 @@ output:
   pdf_document: default
 ---
 
-Functions:
-
-```{r}
-skew_density_general <- function(d,
-                                   angle1,
-                                   angle2,
-                                   ant.dens = 2.2,
-                                   LT = 100,
-                                   LS0 = 22,
-                                   LL0 = 44,
-                                   wA = 3.3,
-                                   ln = 0.691,
-                                   wn = 0.107,
-                                   alpha = 17.02 ){
-
-   # Function defining density function for skew-bridge model
-  theta <- pi/180*angle1   # angles in radians
-  phi <- pi/180*angle2     # angles in radians
-  wT <-  4.799*(angle1 + angle2)^(-0.5014)
-  LAS <- LS0 - 0.5*wA/tan(0.5*(theta + phi)) # (cm)
-  LAL <- LL0 - 0.5*wA/tan(0.5*(theta + phi)) # (cm)
-  LA <- LAS + LAL
-  N <- ant.dens*(LT+LA)
-  Dmax1 <- LAS*cos(theta) # maximum left distance from appex (cm)
-  Dmax2 <- LAL*cos(phi)   # maximum right distance from appex (cm)
-
-
-  ### specification of function ###
-
-  # length of bridge squared (from law of cosines)
-  b.squared <- (LAS/Dmax1*d[1])^2 + (LAL/Dmax2*d[2])^2 - 2*d[1]*d[2]*((LAS*LAL)/(Dmax1*Dmax2))*cos(theta+phi)
-  b <- sqrt(b.squared)  # length of living bridge (cm)
-  f <- LT + LA + b - (LAS/Dmax1)*d[1] - (LAL/Dmax2)*d[2] # length of path of traval (cm)
-  nb <- (wT/(ln*wn))*(1 - wT*tan(0.5*(theta+phi)))*b.squared # number of ants sequesterd for bridge
-
-  rho <- (N - nb/alpha)/f # density function
-
-  return(rho)
-}
-
-```
-
-
-```{r}
-mid_dist <- function(d1, d2, theta, Dmax){
-
-  return(abs((1/cos(0.5*theta))*(Dmax - d1 - d2)))
-
-}
-
-```
-
-
-```{r}
-two_density_general <- function(d,
-                                angle,
-                                ant.dens = 2.2,
-                                LT = 100,
-                                L0 = 22,
-                                ln = 0.691,
-                                wn = 0.107,
-                                wA = 3.3,
-                                alpha = 17.02){
-
-  # Function defining density for two-bridge model
-
-  ### parameters ###
-  theta <- pi/180*angle  # angle in radians
-  wT <- 4.799*(angle)^(-0.5014) # ratio of bridge width/length (value from Reid et al)
-  LAi <- L0 - 0.5*wA/tan(0.5*theta) # (cm)
-  N <- ant.dens*(LT+3*LAi)
-  Dmax <- LAi*cos(0.5*theta)
-
-  ### specification of function ###
-  b <- 2*tan(0.5*theta)*d
-  nb <- wT/(ln*wn)*(1 - wT*tan(0.5*theta))*b^2
-  f <- LT + (1 - d[1]/Dmax)*LAi + (1 - d[2]/Dmax)*LAi + mid_dist(d[1],d[2],theta,Dmax) + b[1] + b[2]
-
-  rho <- (N - nb[1]/alpha - nb[2]/alpha)/f  # density function
-
-  return(rho)
-}
-
-```
-
-
-```{r}
-three_density_general <- function(d,
-                                  angle,
-                                  ant.dens = 2.2,
-                                  LT = 100,
-                                  L0 = 22,
-                                  ln = 0.691,
-                                  wn = 0.107,
-                                  wA = 3.3,
-                                  alpha = 17.02 ){
-  # Function specifying density for three-bridge model
-
-
-  ### parameters ###
-  theta <- pi/180*angle  # angle in radians
-  wT <- 4.799*(angle)^(-0.5014) # ratio of bridge width/length (value from Reid et al)
-  LAi <- L0 - 0.5*wA/tan(0.5*theta) # (cm)
-  Dmax <- LAi*cos(0.5*theta)
-  N <- ant.dens*(LT+4*LAi)
-
-  ### specification of function ###
-  ### specification of function ###
-  b <- 2*tan(0.5*theta)*d
-  nb <- wT/(ln*wn)*(1 - wT*tan(0.5*theta))*b^2
-  f <- LT + (1 - d[1]/Dmax)*LAi + (1 - d[3]/Dmax)*LAi + mid_dist(d[1],d[2],theta,Dmax) + mid_dist(d[2],d[3],theta,Dmax) + b[1] + b[2] + b[3]
-
-  rho <- (N - nb[1]/alpha - nb[2]/alpha - nb[3]/alpha)/f  # density function
-
-  return(rho)
-}
-
-```
-
 
 ```{r}
 # Load libraries
-library(dplyr)
-library(ggplot2)
-library(DEoptim)
+# Load libraries
+if (!require(pacman))
+  install.packages("pacman")
+
+p_load("ggplot2", "cowplot", "dplyr", "RColorBrewer", "viridis", "DEoptim")
+p_load_gh("swarm-lab/projectOptimalBridge")
+
+# Create pretty colorblind friendly palette
+cbf <- brewer.pal(8, "Dark2")
 ```
 
 First density function to be optmized: asymmetric configuration.

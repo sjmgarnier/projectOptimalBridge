@@ -1,15 +1,36 @@
-### parameters ###
-#ant.dens <- 2.2
-#LT <- 100 # overall trail length (cm)
-#LS0 <- 22 # length of left arm (cm)
-#LL0 <- 44 # length of right arm (cm)
-#wA <- 3.3 # width of apparatus (cm)
-#ln <- 0.691 # length of avg ant (cm)
-#wn <- 0.107 # width of avg ant (cm)
-#wT <- 4.799*(angle1 + angle2)^(-0.5014)  # ratio of bridge width/length (value from Reid et al)
-#alpha <- 17.02 #free fitting parameter value from Reid et al
-
-
+#' @title Density Function for Asymmetric Apparatus
+#'
+#' @description This function models the density as a function of
+#'              distance for the asymmetric appratus. 
+#' 
+#' @param d vector of distances values 
+#'       
+#' @param angle1 Angle left arm makes with vertical (in degrees)
+#' 
+#' @param angle2 Angle right arm makes with vertical (in degrees)
+#'   
+#' @param ant.dens Density of ants, default value =  2.2
+#' 
+#' @param LT Overall trail length, default value = 100 (cm)
+#' 
+#' @param LS0 Length of left arm, default value = 22 (cm)
+#' 
+#' @param LL0 Length of right arm, default value = 44 (cm)
+#' 
+#' @param wA Width of apparatus, default value = 3.3 (cm)
+#' 
+#' @param ln Length of avg ant default value = 0.691 (cm)
+#' 
+#' @param wn  Width of avg ant default value = 0.107 (cm)
+#' 
+#' @param alpha Free fitting parameter value from Reid et al, default value 17.02
+#' 
+#' @return Density \code{rho}
+#'
+#' @author Jason Graham, \email{jason.graham@scranton.edu}
+#'
+#'  @export
+#'    
 skew_density_general <- function(d,
                                    angle1,
                                    angle2,
