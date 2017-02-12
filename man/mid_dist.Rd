@@ -2,25 +2,26 @@
 % Please edit documentation in R/mid_dist.R
 \name{mid_dist}
 \alias{mid_dist}
-\title{Mid-distance function}
+\title{Mid-Distance Function}
 \usage{
 mid_dist(d1, d2, theta, Dmax)
 }
 \arguments{
-\item{d1}{Distance of one bridge from apex.}
+\item{d1}{A numeric vector of distances of first bridge from apex in cm.}
 
-\item{d2}{Distance of other bridge from apex.}
+\item{d2}{A numeric vector of distances of second bridge from apex in cm.}
 
-\item{theta}{Angle of apex (in radians)}
+\item{theta}{A numeric vector of angles of apex in rad.}
 
-\item{Dmax}{Maximum possible distance of a bridge from apex.}
+\item{Dmax}{A numeric vector of the maximum possible distances of a bridge
+from apex in cm.}
 }
 \value{
-mid-distance
+A vector of the same length as \code{d1, d2, theta}.
 }
 \description{
-This function models the distance between two
-             bridges along a common arm.
+This function models the distance between two bridges along a
+ common arm.
 }
 \author{
 Jason Graham, \email{jason.graham@scranton.edu}
