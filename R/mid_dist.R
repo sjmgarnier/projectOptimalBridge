@@ -1,6 +1,6 @@
 #' @title Mid-Distance Function
 #'
-#' @description This function models the distance between two bridges along a
+#' @description This function computes the distance between two bridges along a
 #'  common arm.
 #'
 #' @param d1 A numeric vector of distances of first bridge from apex in cm.
@@ -15,6 +15,8 @@
 #' @return A vector of the same length as \code{d1, d2, theta}.
 #'
 #' @author Jason Graham, \email{jason.graham@@scranton.edu}
+#'
+#' @author Simon Garnier, \email{garnier@@njit.edu}
 #'
 #' @export
 #'

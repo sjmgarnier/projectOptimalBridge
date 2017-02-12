@@ -20,9 +20,11 @@ from apex in cm.}
 A vector of the same length as \code{d1, d2, theta}.
 }
 \description{
-This function models the distance between two bridges along a
+This function computes the distance between two bridges along a
  common arm.
 }
 \author{
 Jason Graham, \email{jason.graham@scranton.edu}
+
+Simon Garnier, \email{garnier@njit.edu}
 }
