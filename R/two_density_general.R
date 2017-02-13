@@ -3,9 +3,9 @@
 #' @description This function computes the density as a function of distance for
 #'  the two-apex appratus.
 #'
-#' @param d A numeric dector of distances values in cm.
+#' @param d A length 2 numeric dector of distances values in cm.
 #'
-#' @param angle A vector of angles of apex in deg.
+#' @param angle A scalar for the angle of apex in deg.
 #'
 #' @param ant.dens A scalar for the density of ants in ants/cm (default: 2.2).
 #'
@@ -32,6 +32,17 @@
 #'
 two_density_general <- function(d, angle, ant.dens = 2.2, LT = 100, L0 = 22,
                                 wA = 3.3, ln = 0.691, wn = 0.107, alpha = 17.02) {
+  args <- as.list(environment())
+
+  if (!all(sapply(args, is.numeric)))
+    stop("All arguments must be numeric.")
+
+  l <- lengths(args)
+  if (l[1] != 2)
+    stop("d must be of length 2.")
+
+  if (any(l[2:length(l)] > 1))
+    stop("angle, ant.dens, LT, L0, wA, ln, wn, and alpha should be scalar values.")
 
   theta <- pi / 180 * angle
   wT <- 4.799 * angle ^ -0.5014
