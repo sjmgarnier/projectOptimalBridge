@@ -21,10 +21,12 @@
 #' @export
 #'
 mid_dist <- function(d1, d2, theta, Dmax) {
-  if (!all(is.numeric(d1), is.numeric(d2), is.numeric(theta), is.numeric(Dmax)))
-    stop("All arguments must be numeric")
+  args <- as.list(environment())
 
-  l <- lengths(list(d1, d2, theta, Dmax))
+  if (!all(sapply(args, is.numeric)))
+    stop("All arguments must be numeric.")
+
+  l <- lengths(args)
   if (!all(((l == 1) + (l == max(l))) > 0))
     stop("All arguments should be of either length 1 or of the same length.")
 
