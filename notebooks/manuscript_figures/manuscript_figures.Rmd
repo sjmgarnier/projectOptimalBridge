@@ -17,7 +17,7 @@ output:
 if (!require(pacman))
   install.packages("pacman")
 
-p_load("ggplot2", "cowplot", "dplyr", "RColorBrewer", "viridis", "DEoptim")
+p_load("ggplot2", "cowplot", "dplyr", "RColorBrewer", "DEoptim")
 p_load_gh("swarm-lab/projectOptimalBridge")
 
 # Create pretty colorblind friendly palette
