@@ -2,37 +2,40 @@
 % Please edit documentation in R/three_density_general.R
 \name{three_density_general}
 \alias{three_density_general}
-\title{Density Function for Three-apex Apparatus}
+\title{Density Function for Three-Apex Apparatus}
 \usage{
 three_density_general(d, angle, ant.dens = 2.2, LT = 100, L0 = 22,
-  ln = 0.691, wn = 0.107, wA = 3.3, alpha = 17.02)
+  wA = 3.3, ln = 0.691, wn = 0.107, alpha = 17.02)
 }
 \arguments{
-\item{d}{vector of distances values}
+\item{d}{A length 3 numeric vector of distances values in cm.}
 
-\item{angle}{Angle of apex (in degrees)}
+\item{angle}{A scalar for the angle of apex in deg.}
 
-\item{ant.dens}{Density of ants, default value =  2.2}
+\item{ant.dens}{A scalar for the density of ants in ants/cm (default: 2.2).}
 
-\item{LT}{Overall trail length, default value = 100 (cm)}
+\item{LT}{A scalar for the overall trail length in cm (default: 100).}
 
-\item{L0}{Length of one arm, default value = 22 (cm)}
+\item{L0}{A scalar for the length of the apparatus arm in cm (default: 22).}
 
-\item{ln}{Length of avg ant default value = 0.691 (cm)}
+\item{wA}{A scalar for the width of the arms of the apparatus in cm (default: 3.3).}
 
-\item{wn}{Width of avg ant default value = 0.107 (cm)}
+\item{ln}{A scalar for the average length of an ant in cm (default:0.691).}
 
-\item{wA}{Width of apparatus, default value = 3.3 (cm)}
+\item{wn}{A scalar for the average width of an ant in cm (default: 0.107).}
 
-\item{alpha}{Free fitting parameter value from Reid et al, default value 17.02}
+\item{alpha}{A scalar for the free fitting parameter value from Reid et al.
+(default: 17.02).}
 }
 \value{
-Density \code{rho}
+A vector of the of the same length as \code{d}.
 }
 \description{
-This function models the density as a function of
-             distance for the two-apex appratus.
+This function computes the density as a function of distance for
+ the three-apex appratus.
 }
 \author{
 Jason Graham, \email{jason.graham@scranton.edu}
+
+Simon Garnier, \email{garnier@njit.edu}
 }

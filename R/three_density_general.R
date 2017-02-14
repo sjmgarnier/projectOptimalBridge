@@ -3,7 +3,7 @@
 #' @description This function computes the density as a function of distance for
 #'  the three-apex appratus.
 #'
-#' @param d A length 3 numeric dector of distances values in cm.
+#' @param d A length 3 numeric vector of distances values in cm.
 #'
 #' @param angle A scalar for the angle of apex in deg.
 #'
@@ -22,7 +22,7 @@
 #' @param alpha A scalar for the free fitting parameter value from Reid et al.
 #'  (default: 17.02).
 #'
-#' @return A vector of the of the same length as \code{d, angle}.
+#' @return A vector of the of the same length as \code{d}.
 #'
 #' @author Jason Graham, \email{jason.graham@@scranton.edu}
 #'
