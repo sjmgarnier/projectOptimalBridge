@@ -9,35 +9,40 @@ skew_density_general(d, angle1, angle2, ant.dens = 2.2, LT = 100,
   alpha = 17.02)
 }
 \arguments{
-\item{d}{vector of distances values}
+\item{d}{A length 2 numeric vector of distances values in cm.}
 
-\item{angle1}{Angle left arm makes with vertical (in degrees)}
+\item{angle1}{A scalar for the angle in deg that the left arm makes with
+vertical.}
 
-\item{angle2}{Angle right arm makes with vertical (in degrees)}
+\item{angle2}{A scalar for the angle in deg that the right arm makes with
+vertical.}
 
-\item{ant.dens}{Density of ants, default value =  2.2}
+\item{ant.dens}{A scalar for the density of ants in ants/cm (default: 2.2).}
 
-\item{LT}{Overall trail length, default value = 100 (cm)}
+\item{LT}{A scalar for the overall trail length in cm (default: 100).}
 
-\item{LS0}{Length of left arm, default value = 22 (cm)}
+\item{LS0}{A scalar for the length of the left arm in cm (default: 22).}
 
-\item{LL0}{Length of right arm, default value = 44 (cm)}
+\item{LL0}{A scalar for the length of the right arm in cm (default: 44).}
 
-\item{wA}{Width of apparatus, default value = 3.3 (cm)}
+\item{wA}{A scalar for the width of the arms of the apparatus in cm (default: 3.3).}
 
-\item{ln}{Length of avg ant default value = 0.691 (cm)}
+\item{ln}{A scalar for the average length of an ant in cm (default:0.691).}
 
-\item{wn}{Width of avg ant default value = 0.107 (cm)}
+\item{wn}{A scalar for the average width of an ant in cm (default: 0.107).}
 
-\item{alpha}{Free fitting parameter value from Reid et al, default value 17.02}
+\item{alpha}{A scalar for the free fitting parameter value from Reid et al.
+(default: 17.02).}
 }
 \value{
-Density \code{rho}
+A vector of the of the same length as \code{d}.
 }
 \description{
-This function models the density as a function of
-             distance for the asymmetric appratus.
+This function computes the density as a function of distance for
+ the asymmetric appratus.
 }
 \author{
 Jason Graham, \email{jason.graham@scranton.edu}
+
+Simon Garnier, \email{garnier@njit.edu}
 }
