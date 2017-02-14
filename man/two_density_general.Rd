@@ -8,9 +8,9 @@ two_density_general(d, angle, ant.dens = 2.2, LT = 100, L0 = 22,
   wA = 3.3, ln = 0.691, wn = 0.107, alpha = 17.02)
 }
 \arguments{
-\item{d}{A numeric dector of distances values in cm.}
+\item{d}{A length 2 numeric vector of distances values in cm.}
 
-\item{angle}{A vector of angles of apex in deg.}
+\item{angle}{A scalar for the angle of apex in deg.}
 
 \item{ant.dens}{A scalar for the density of ants in ants/cm (default: 2.2).}
 
@@ -28,7 +28,7 @@ two_density_general(d, angle, ant.dens = 2.2, LT = 100, L0 = 22,
 (default: 17.02).}
 }
 \value{
-A vector of the of the same length as \code{d, angle}.
+A vector of the of the same length as \code{d}.
 }
 \description{
 This function computes the density as a function of distance for
