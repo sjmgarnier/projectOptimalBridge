@@ -114,6 +114,20 @@ filter(skew.results, theta == 20) %>%
   theme_minimal(base_size = 15)
 ```
 
+```{r, fig.height=4, fig.width=6, message=FALSE}
+filter(skew.results, theta == 20) %>%
+  ggplot(aes(x = phi, y = d1 - d2)) + 
+  geom_line(size = 1.5) + 
+  geom_vline(xintercept = 20, linetype = 2) + 
+  geom_hline(yintercept = 0, linetype = 2) +
+  draw_label(substitute(paste(phi, " = ", theta, " = ", 20~degree)), x = 20, y = 0.25,
+             angle = 90, hjust = 0, vjust = -0.25) + 
+  ylim(-1, 1) + 
+  xlab(expression(paste(phi, " (deg)"))) +
+  ylab(expression(paste(d[1] - d[2], ", (cm)"))) + 
+  theme_minimal(base_size = 15)
+```
+
 ### Figure 5-b
 
 ```{r, fig.height=4, fig.width=6, message=FALSE}
@@ -123,6 +137,20 @@ filter(skew.results, theta == 10) %>%
   geom_hline(yintercept = 0, linetype = 2) +
   ylim(-1, 1) + 
   xlab(expression(paste(theta, "(=10) ", + phi, ", (deg)"))) +
+  ylab(expression(paste(d[1] - d[2], ", (cm)"))) + 
+  theme_minimal(base_size = 15)
+```
+
+```{r, fig.height=4, fig.width=6, message=FALSE}
+filter(skew.results, theta == 10) %>%
+  ggplot(aes(x = phi, y = d1 - d2)) + 
+  geom_line(size = 1.5) + 
+  geom_vline(xintercept = 10, linetype = 2) + 
+  geom_hline(yintercept = 0, linetype = 2) +
+  draw_label(substitute(paste(phi, " = ", theta, " = ", 10~degree)), x = 10, y = 0.25,
+             angle = 90, hjust = 0, vjust = -0.25) + 
+  ylim(-1, 1) + 
+  xlab(expression(paste(phi, " (deg)"))) +
   ylab(expression(paste(d[1] - d[2], ", (cm)"))) + 
   theme_minimal(base_size = 15)
 ```
@@ -184,21 +212,69 @@ if (file.exists("twoResults.csv")) {
 ### Figure 6
 
 ```{r, fig.height=4, fig.width=6, message=FALSE}
-redat6 <- data.frame(type = "Dmax", angle = two.results$Angle, val = two.results$Dmax) %>%
-  rbind(data.frame(type = "d1, d2", angle = two.results$Angle, val = two.results$d1)) %>%
+redat6 <- data.frame(type = "Dmax", angle = two.results$Angle, 
+                     val = two.results$Dmax, rel = 1) %>%
+  rbind(data.frame(type = "d1, d2", angle = two.results$Angle, 
+                   val = two.results$d1, rel = two.results$d1 / two.results$Dmax)) %>%
   rbind(data.frame(type = "Mid-dist", angle = two.results$Angle, 
-                   val = two.results$Dmax - two.results$d1 - two.results$d2))
+                   val = two.results$Dmax - two.results$d1 - two.results$d2,
+                   rel = (two.results$Dmax - two.results$d1 - two.results$d2) / two.results$Dmax)) 
 
 ggplot(redat6, aes(x = angle, y = val, color = type, linetype = type)) +
   geom_line(size = 1.5) + 
-  xlab("Distance (cm)") +
-  ylab("Angle (deg)") + 
+  ylab("Distance (cm)") +
+  xlab("Angle (deg)") + 
   scale_color_manual(values = cbf) + 
   theme_minimal(base_size = 15) + 
   theme(legend.title = element_blank(),
         legend.justification = c(0, 1), 
         legend.position = c(0, 1))
 ```
+
+```{r, fig.height=4, fig.width=6, message=FALSE}
+circled_num <- data.frame(x = c((min(redat6$angle) + 37.5) / 2, (37.5 + max(redat6$angle)) / 2),
+                          y = -0.075 * max(redat6$val),
+                          char = c("1", "2"))
+
+ggplot() +
+  geom_rect(aes(xmin = -Inf, xmax = 37.5, ymin = -Inf, ymax = Inf), fill = "#00000025") +
+  geom_rect(aes(xmin = 37.5, xmax = Inf, ymin = -Inf, ymax = Inf), fill = "#00000045") +
+  geom_line(data = redat6, aes(x = angle, y = val, color = type, linetype = type), size = 1.5) + 
+  geom_text(data = circled_num, aes(x = x, y = y, label = char)) + 
+  geom_point(data = circled_num, aes(x = x, y = y), shape = 1, size = 5) +
+  ylim(-0.1 * max(redat6$val), NA) + 
+  ylab("Distance (cm)") +
+  xlab("Angle (deg)") + 
+  scale_color_manual(values = cbf) + 
+  theme_minimal(base_size = 15) + 
+  theme(legend.title = element_blank(),
+        legend.justification = c(0, 1), 
+        legend.position = c(0, 1))
+```
+
+```{r, fig.height=4, fig.width=6, message=FALSE}
+circled_num <- data.frame(x = c((min(redat6$angle) + 37.5) / 2, (37.5 + max(redat6$angle)) / 2),
+                          y = -0.075 * max(redat6$rel),
+                          char = c("1", "2"))
+
+ggplot() +
+  geom_rect(aes(xmin = -Inf, xmax = 37.5, ymin = -Inf, ymax = Inf), fill = "#00000025") +
+  geom_rect(aes(xmin = 37.5, xmax = Inf, ymin = -Inf, ymax = Inf), fill = "#00000045") +
+  geom_line(data = filter(redat6, type != "Dmax"), 
+            aes(x = angle, y = rel, color = type, linetype = type), size = 1.5) + 
+  geom_text(data = circled_num, aes(x = x, y = y, label = char)) + 
+  geom_point(data = circled_num, aes(x = x, y = y), shape = 1, size = 5) +
+  ylim(-0.1 * max(redat6$rel), NA) + 
+  ylab("Distance / Dmax") +
+  xlab("Angle (deg)") + 
+  scale_color_manual(values = cbf) + 
+  theme_minimal(base_size = 15) + 
+  theme(legend.title = element_blank(),
+        legend.justification = c(0, 1), 
+        legend.position = c(0, 1))
+```
+
+
 
 ## Interpretation
 
@@ -259,19 +335,71 @@ if (file.exists("threeResults.csv")) {
 ### Figure 7-a
 
 ```{r, fig.height=4, fig.width=6, message=FALSE}
-redat7a <- data.frame(type = "Dmax", angle = three.results$Angle, val = three.results$Dmax) %>%
-  rbind(data.frame(type = "d1 (left), d3 (right)", angle = three.results$Angle, val = three.results$d1)) %>%
-  rbind(data.frame(type = "d2 (mid)", angle = three.results$Angle, val = three.results$d2)) 
+redat7a <- data.frame(type = "Dmax", angle = three.results$Angle, 
+                      val = three.results$Dmax, rel = 1) %>%
+  rbind(data.frame(type = "d1 (left), d3 (right)", angle = three.results$Angle, 
+                   val = three.results$d1, rel = three.results$d1 / three.results$Dmax)) %>%
+  rbind(data.frame(type = "d2 (mid)", angle = three.results$Angle, 
+                   val = three.results$d2, rel = three.results$d2 / three.results$Dmax)) 
 
 ggplot(redat7a, aes(x = angle, y = val, color = type, linetype = type)) +
   geom_line(size = 1.5) + 
-  xlab("Distance (cm)") +
-  ylab("Angle (deg)") + 
+  ylab("Distance (cm)") +
+  xlab("Angle (deg)") + 
   scale_color_manual(values = cbf) +   
   theme_minimal(base_size = 15) + 
   theme(legend.title = element_blank(),
         legend.justification = c(0, 1), 
         legend.position = c(0, 1))
+```
+
+```{r, fig.height=4, fig.width=6, message=FALSE}
+circled_num <- data.frame(x = c((min(redat7a$angle) + 20.5) / 2, 
+                                (20.5 + 38) / 2,
+                                (38 + max(redat7a$angle)) / 2),
+                          y = -0.075 * max(redat7a$val),
+                          char = c("1", "2", "3"))
+
+ggplot() +
+  geom_rect(aes(xmin = -Inf, xmax = 20.5, ymin = -Inf, ymax = Inf), fill = "#00000025") +
+  geom_rect(aes(xmin = 20.5, xmax = 38, ymin = -Inf, ymax = Inf), fill = "#00000035") +
+  geom_rect(aes(xmin = 38, xmax = Inf, ymin = -Inf, ymax = Inf), fill = "#00000045") +
+  geom_line(data = redat7a, aes(x = angle, y = val, color = type, linetype = type), size = 1.5) + 
+  geom_text(data = circled_num, aes(x = x, y = y, label = char)) + 
+  geom_point(data = circled_num, aes(x = x, y = y), shape = 1, size = 5) +
+  ylim(-0.1 * max(redat7a$val), 1.1 * max(redat7a$val)) +
+  ylab("Distance (cm)") +
+  xlab("Angle (deg)") + 
+  scale_color_manual(values = cbf) +   
+  theme_minimal(base_size = 15) + 
+  theme(legend.title = element_blank(),
+        legend.justification = c(0, 1), 
+        legend.position = c(0, 1))
+```
+
+```{r, fig.height=4, fig.width=6, message=FALSE}
+circled_num <- data.frame(x = c((min(redat7a$angle) + 20.5) / 2, 
+                                (20.5 + 38) / 2,
+                                (38 + max(redat7a$angle)) / 2),
+                          y = -0.075 * max(redat7a$rel),
+                          char = c("1", "2", "3"))
+
+ggplot() +
+  geom_rect(aes(xmin = -Inf, xmax = 20.5, ymin = -Inf, ymax = Inf), fill = "#00000025") +
+  geom_rect(aes(xmin = 20.5, xmax = 38, ymin = -Inf, ymax = Inf), fill = "#00000035") +
+  geom_rect(aes(xmin = 38, xmax = Inf, ymin = -Inf, ymax = Inf), fill = "#00000045") +
+  geom_line(data = filter(redat7a, type != "Dmax"), 
+            aes(x = angle, y = rel, color = type, linetype = type), size = 1.5) + 
+  geom_text(data = circled_num, aes(x = x, y = y, label = char)) + 
+  geom_point(data = circled_num, aes(x = x, y = y), shape = 1, size = 5) +
+  ylim(-0.1 * max(redat7a$rel), NA) +
+  ylab("Distance / Dmax") +
+  xlab("Angle (deg)") + 
+  scale_color_manual(values = cbf) +   
+  theme_minimal(base_size = 15) + 
+  theme(legend.title = element_blank(),
+        legend.justification = c(1, 1), 
+        legend.position = c(1, 1))
 ```
 
 ### Figure 7-b
@@ -284,8 +412,32 @@ redat7b <- data.frame(type = "Mid-dist left", angle = three.results$Angle,
 
 ggplot(redat7b, aes(x = angle, y = val, color = type, linetype = type)) +
   geom_line(size = 1.5) + 
-  xlab("Distance (cm)") +
-  ylab("Angle (deg)") + 
+  ylab("Distance (cm)") +
+  xlab("Angle (deg)") + 
+  scale_color_manual(values = cbf) +  
+  theme_minimal(base_size = 15) + 
+  theme(legend.title = element_blank(),
+        legend.justification = c(0, 1), 
+        legend.position = c(0, 1))
+```
+
+```{r, fig.height=4, fig.width=6, message=FALSE}
+circled_num <- data.frame(x = c((min(redat7b$angle) + 20.5) / 2, 
+                                (20.5 + 38) / 2,
+                                (38 + max(redat7b$angle)) / 2),
+                          y = -0.075 * max(redat7b$val),
+                          char = c("1", "2", "3"))
+
+ggplot() +
+  geom_rect(aes(xmin = -Inf, xmax = 20.5, ymin = -Inf, ymax = Inf), fill = "#00000025") +
+  geom_rect(aes(xmin = 20.5, xmax = 38, ymin = -Inf, ymax = Inf), fill = "#00000035") +
+  geom_rect(aes(xmin = 38, xmax = Inf, ymin = -Inf, ymax = Inf), fill = "#00000045") +
+  geom_line(data = redat7b, aes(x = angle, y = val, color = type, linetype = type), size = 1.5) + 
+  geom_text(data = circled_num, aes(x = x, y = y, label = char)) + 
+  geom_point(data = circled_num, aes(x = x, y = y), shape = 1, size = 5) +
+  ylim(-0.1 * max(redat7b$val), NA) +
+  ylab("Distance (cm)") +
+  xlab("Angle (deg)") + 
   scale_color_manual(values = cbf) +  
   theme_minimal(base_size = 15) + 
   theme(legend.title = element_blank(),
@@ -296,4 +448,165 @@ ggplot(redat7b, aes(x = angle, y = val, color = type, linetype = type)) +
 ## Interpretation
 
 ![](extfig/ThreeSummary.png)
+
+# Figure 8
+
+## Figure 8a
+
+### Optimization routine
+
+```{r}
+if (file.exists("skewResults_0.5.csv")) {
+  skewResults_0.5 <- read.csv("skewResults_0.5.csv")
+} else {
+  contDE <- DEoptim.control(trace = FALSE)
+  
+  ###### Optimization for skew-bridge configuration  ##########################################
+  angle1 <- seq(5, 30, 0.5)  # angle in degrees
+  angle2 <- seq(5, 30, 0.5)  # angle in degrees
+  index1 <- seq(1, length(angle1), 1)
+  index2 <- seq(1, length(angle2), 1)
+  LS0 <- 22 # length of left arm (cm)
+  LL0 <- 44 # length of right arm (cm)
+  wA <- 3.3 # width of appratus (cm)
+  
+  theta <- matrix(rep(0, length(angle1) * length(angle2)), nrow = length(angle1), ncol = length(angle2))
+  phi <- matrix(rep(0, length(angle1) * length(angle2)), nrow = length(angle1), ncol = length(angle2))
+  D1 <- matrix(rep(0, length(angle1) * length(angle2)), nrow = length(angle1), ncol = length(angle2))
+  D2 <- matrix(rep(0, length(angle1) * length(angle2)), nrow = length(angle1), ncol = length(angle2))
+  d1 <- matrix(rep(0, length(angle1) * length(angle2)), nrow = length(angle1), ncol = length(angle2))
+  d2 <- matrix(rep(0, length(angle1) * length(angle2)), nrow = length(angle1), ncol = length(angle2))
+  
+  for (m in index1) {
+    for (n in index2) {
+      
+      LAS <- LS0 - 0.5 * wA / tan(0.5 * pi / 180 * (angle1[m] + angle2[n])) # (cm)
+      LAL <- LL0 - 0.5 * wA / tan(0.5 * pi/180 * (angle1[m] + angle2[n])) # (cm)
+      Dmax1 <- LAS * cos(pi / 180 * angle1[m]) # maximum left distance from appex (cm)
+      Dmax2 <- LAL * cos(pi / 180 * angle2[n]) # maximum right distance from appex (cm)
+      
+      skew.to.optim <- function(d) {
+        -1.0 * skew_density_general(d, angle1[m], angle2[n], ant.dens = 0.5, LS0 = LS0, LL0 = LL0, wA = wA)
+      }
+      
+      skew.opt.result <- DEoptim(skew.to.optim, lower = c(0, 0), upper = c(Dmax1, Dmax2), control = contDE)
+      p <- as.numeric(skew.opt.result$optim$bestmem)
+      theta[m, n] <- angle1[m]
+      phi[m, n] <- angle2[n]
+      D1[m, n] <- Dmax1
+      D2[m, n] <- Dmax2
+      d1[m, n] <- p[1]
+      d2[m, n] <- p[2]
+    }
+  }
+  
+  theta <- as.vector(theta)
+  phi <- as.vector(phi)
+  sum <- theta + phi
+  D1 <- as.vector(D1)
+  D2 <- as.vector(D2)
+  d1 <- as.vector(d1)
+  d2 <- as.vector(d2)
+  
+  skewResults_0.5 <- data.frame("theta" = theta, "phi" = phi, "sum" = sum, "Dmax1" = D1, 
+                             "Dmax2" = D2, "d1" = d1, "d2" = d2)
+  write.csv(skewResults_0.5, file = "skewResults_0.5.csv", row.names = FALSE)
+}
+```
+
+### Results
+
+```{r, fig.height=4, fig.width=6, message=FALSE}
+filter(skewResults_0.5, theta == 20) %>%
+  ggplot(aes(x = phi, y = d1 - d2)) + 
+  geom_line(size = 1.5) + 
+  geom_vline(xintercept = 20, linetype = 2) + 
+  geom_hline(yintercept = 0, linetype = 2) +
+  draw_label(substitute(paste(phi, " = ", theta, " = ", 20~degree)), x = 20, y = -2,
+             angle = 90, hjust = 0, vjust = -0.25) + 
+  ylim(-2.5, 1) + 
+  xlab(expression(paste(phi, " (deg)"))) +
+  ylab(expression(paste(d[1] - d[2], ", (cm)"))) + 
+  theme_minimal(base_size = 15)
+```
+
+## Figure 8b
+
+### Optimization routine
+
+```{r}
+if (file.exists("skewResults_5.csv")) {
+  skewResults_5 <- read.csv("skewResults_5.csv")
+} else {
+  contDE <- DEoptim.control(trace = FALSE)
+  
+  ###### Optimization for skew-bridge configuration  ##########################################
+  angle1 <- seq(5, 30, 0.5)  # angle in degrees
+  angle2 <- seq(5, 30, 0.5)  # angle in degrees
+  index1 <- seq(1, length(angle1), 1)
+  index2 <- seq(1, length(angle2), 1)
+  LS0 <- 22 # length of left arm (cm)
+  LL0 <- 44 # length of right arm (cm)
+  wA <- 3.3 # width of appratus (cm)
+  
+  theta <- matrix(rep(0, length(angle1) * length(angle2)), nrow = length(angle1), ncol = length(angle2))
+  phi <- matrix(rep(0, length(angle1) * length(angle2)), nrow = length(angle1), ncol = length(angle2))
+  D1 <- matrix(rep(0, length(angle1) * length(angle2)), nrow = length(angle1), ncol = length(angle2))
+  D2 <- matrix(rep(0, length(angle1) * length(angle2)), nrow = length(angle1), ncol = length(angle2))
+  d1 <- matrix(rep(0, length(angle1) * length(angle2)), nrow = length(angle1), ncol = length(angle2))
+  d2 <- matrix(rep(0, length(angle1) * length(angle2)), nrow = length(angle1), ncol = length(angle2))
+  
+  for (m in index1) {
+    for (n in index2) {
+      
+      LAS <- LS0 - 0.5 * wA / tan(0.5 * pi / 180 * (angle1[m] + angle2[n])) # (cm)
+      LAL <- LL0 - 0.5 * wA / tan(0.5 * pi/180 * (angle1[m] + angle2[n])) # (cm)
+      Dmax1 <- LAS * cos(pi / 180 * angle1[m]) # maximum left distance from appex (cm)
+      Dmax2 <- LAL * cos(pi / 180 * angle2[n]) # maximum right distance from appex (cm)
+      
+      skew.to.optim <- function(d) {
+        -1.0 * skew_density_general(d, angle1[m], angle2[n], ant.dens = 5, LS0 = LS0, LL0 = LL0, wA = wA)
+      }
+      
+      skew.opt.result <- DEoptim(skew.to.optim, lower = c(0, 0), upper = c(Dmax1, Dmax2), control = contDE)
+      p <- as.numeric(skew.opt.result$optim$bestmem)
+      theta[m, n] <- angle1[m]
+      phi[m, n] <- angle2[n]
+      D1[m, n] <- Dmax1
+      D2[m, n] <- Dmax2
+      d1[m, n] <- p[1]
+      d2[m, n] <- p[2]
+    }
+  }
+  
+  theta <- as.vector(theta)
+  phi <- as.vector(phi)
+  sum <- theta + phi
+  D1 <- as.vector(D1)
+  D2 <- as.vector(D2)
+  d1 <- as.vector(d1)
+  d2 <- as.vector(d2)
+  
+  skewResults_5 <- data.frame("theta" = theta, "phi" = phi, "sum" = sum, "Dmax1" = D1, 
+                             "Dmax2" = D2, "d1" = d1, "d2" = d2)
+  write.csv(skewResults_5, file = "skewResults_5.csv", row.names = FALSE)
+}
+```
+
+### Results
+
+```{r, fig.height=4, fig.width=6, message=FALSE}
+filter(skewResults_5, theta == 20) %>%
+  ggplot(aes(x = phi, y = d1 - d2)) + 
+  geom_line(size = 1.5) + 
+  geom_vline(xintercept = 20, linetype = 2) + 
+  geom_hline(yintercept = 0, linetype = 2) +
+  draw_label(substitute(paste(phi, " = ", theta, " = ", 20~degree)), x = 20, y = -2,
+             angle = 90, hjust = 0, vjust = -0.25) + 
+  ylim(-2.5, 1) + 
+  xlab(expression(paste(phi, " (deg)"))) +
+  ylab(expression(paste(d[1] - d[2], ", (cm)"))) + 
+  theme_minimal(base_size = 15)
+```
+
 
