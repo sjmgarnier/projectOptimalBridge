@@ -1,4 +1,4 @@
-### "ADD TITLE HERE" - Accompanying material
+### "Optimal construction of army ant living bridges" - Accompanying material
 
 ---
 
